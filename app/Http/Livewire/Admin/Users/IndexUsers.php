@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Admin\Users;
 
 use App\Models\User;
 use Illuminate\Http\Resources\Json\PaginatedResourceResponse;
@@ -212,7 +212,7 @@ class IndexUsers extends Component
             ->orderBy($this->sort, $this->direction)
             ->paginate($this->show);
 
-        return view('livewire.index-users', compact('users'));
+        return view('livewire.admin.users.index-users', compact('users'));
     }
 
     public function order($sort)

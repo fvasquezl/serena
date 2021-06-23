@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\HomeController;
-use App\Http\Livewire\IndexUsers;
+use App\Http\Livewire\Admin\Users\IndexUsers;
 use Illuminate\Support\Facades\Route;
 
 

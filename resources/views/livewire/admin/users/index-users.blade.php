@@ -5,7 +5,8 @@
                 {{ __('Admin/Users') }}
             </h2>
             <div class="mr-2">
-                <x-jet-button wire:click="$emitTo('index-users', 'createModal')" class="bg-blue-500 hover:bg-blue-700">
+                <x-jet-button wire:click="$emitTo('admin.users.index-users', 'createModal')"
+                    class="bg-blue-500 hover:bg-blue-700">
                     <i class="fas fa-plus"></i>&nbsp; {{ __('Create user') }}
                 </x-jet-button>
             </div>
@@ -98,7 +99,7 @@
                                         </td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center text-sm font-medium">
                                             <x-jet-button
-                                                wire:click="$emitTo('index-users', 'updateModal',{{ $user->id }} )"
+                                                wire:click="$emitTo('admin.users.index-users', 'updateModal',{{ $user->id }} )"
                                                 class="bg-green-500 hover:bg-green-700">
                                                 <i class="fas fa-edit"></i>
                                             </x-jet-button>
@@ -191,7 +192,7 @@
                     if (result.isConfirmed) {
                         console.log(userId);
 
-                        Livewire.emitTo('index-users', 'delete', userId)
+                        Livewire.emitTo('admin.users.index-users', 'delete', userId)
 
                         Swal.fire(
                             'Deleted!',
