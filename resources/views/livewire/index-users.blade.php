@@ -13,45 +13,90 @@
     </div>
 
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <x-table>
+                    <div class="px-6 py-4 flex items-center">
+                        <div class="flex items-center">
+                            <span>Show</span>
+                            <select class="mx-2 form-control" wire:model='show'>
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                            <span>Search:</span>
+                        </div>
+                        <x-jet-input class="flex-1 mx-4" placeholder="Search.." type="text" wire:model="search" />
+                        {{-- @livewire('admin.users.create-users') --}}
+                    </div>
+
                     <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Id
-                                </th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Name
-                                </th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Email
-                                </th>
-                                <th scope="col" class="relative px-6 py-3">
-                                    <span class="sr-only">Edit</span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @if ($users->count())
+                        @if ($users->count())
+                            <thead class="bg-purple-50">
+                                <tr>
+                                    <th scope="col"
+                                        class="px-4 py-3 cursor-pointer text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        wire:click="order('id')">
+                                        Id
+                                        @if ($sort == 'id')
+                                            @if ($direction == 'asc')
+                                                <i class="fas fa-sort-alpha-up-alt float-right mt-1"></i>
+                                            @else
+                                                <i class="fas fa-sort-alpha-down-alt float-right mt-1"></i>
+                                            @endif
+                                        @else
+                                            <i class="fas fa-sort float-right"></i>
+                                        @endif
+                                    </th>
+                                    <th scope="col"
+                                        class="px-4 py-3 cursor-pointer text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        wire:click="order('name')">
+                                        Name
+                                        @if ($sort == 'name')
+                                            @if ($direction == 'asc')
+                                                <i class="fas fa-sort-alpha-up-alt float-right mt-1"></i>
+                                            @else
+                                                <i class="fas fa-sort-alpha-down-alt float-right mt-1"></i>
+                                            @endif
+                                        @else
+                                            <i class="fas fa-sort float-right"></i>
+                                        @endif
+                                    </th>
+                                    <th scope="col"
+                                        class="px-4 py-3 cursor-pointer text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        wire:click="order('email')">
+                                        Email
+                                        @if ($sort == 'email')
+                                            @if ($direction == 'asc')
+                                                <i class="fas fa-sort-alpha-up-alt float-right mt-1"></i>
+                                            @else
+                                                <i class="fas fa-sort-alpha-down-alt float-right mt-1"></i>
+                                            @endif
+                                        @else
+                                            <i class="fas fa-sort float-right"></i>
+                                        @endif
+                                    </th>
+                                    <th scope="col"
+                                        class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Options
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
                                 @foreach ($users as $user)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                    <tr class="hover:bg-gray-100 text-gray-900">
+                                        <td class="px-4 py-2 text-center whitespace-nowrap">
                                             {{ $user->id }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td class="px-4 py-2 whitespace-nowrap">
                                             {{ $user->name }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td class="px-4 py-2 whitespace-nowrap">
                                             {{ $user->email }}
                                         </td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-right text-sm font-medium">
-                                            {{-- <x-jet-button wire:click="updateShowModal({{ $user->id }})" --}}
+                                        <td class="px-4 py-2 whitespace-nowrap text-center text-sm font-medium">
                                             <x-jet-button
                                                 wire:click="$emitTo('index-users', 'updateModal',{{ $user->id }} )"
                                                 class="bg-green-500 hover:bg-green-700">
@@ -70,7 +115,7 @@
                                         found
                                     </td>
                                 </tr>
-                            @endif
+                        @endif
                         </tbody>
                     </table>
                     <div class="bg-white px-4 py-3 border-gray-200 sm:px-6">

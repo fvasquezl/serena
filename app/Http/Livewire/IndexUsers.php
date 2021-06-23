@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\User;
+use Illuminate\Http\Resources\Json\PaginatedResourceResponse;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -10,13 +11,27 @@ use Livewire\WithPagination;
 class IndexUsers extends Component
 {
     use WithPagination;
-
+    public $user;
     public $modalFormVisible = false;
     public $modelId;
     public $name;
     public $email;
     public $password;
     public $password_confirmation;
+
+    //Table
+    public $readyToLoad = false;
+    public $search = '';
+    public $direction = 'desc';
+    public $sort = 'id';
+    public $show = '10';
+
+    protected $queryString = [
+        'show' => ['except' => '10'],
+        'sort' => ['except' => 'id'],
+        'direction' => ['except' => 'desc'],
+        'search' => ['except' => ''],
+    ];
 
     protected $listeners = [
         'render',
@@ -192,8 +207,31 @@ class IndexUsers extends Component
      */
     public function render()
     {
-        return view('livewire.index-users', [
-            'users' => $this->read(),
-        ]);
+        $users = User::where('name', 'LIKE', "%{$this->search}%")
+            ->orWhere('email', 'LIKE', "%{$this->search}%")
+            ->orderBy($this->sort, $this->direction)
+            ->paginate($this->show);
+
+        return view('livewire.index-users', compact('users'));
+    }
+
+    public function order($sort)
+    {
+        if ($this->sort == $sort) {
+            if ($this->direction == 'desc') {
+                $this->direction = 'asc';
+            } else {
+                $this->direction = 'desc';
+            }
+        } else {
+            $this->sort = $sort;
+            $this->direction = 'asc';
+        }
+    }
+
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
     }
 }
