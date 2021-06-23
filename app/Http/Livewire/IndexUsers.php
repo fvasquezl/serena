@@ -18,6 +18,13 @@ class IndexUsers extends Component
     public $password;
     public $password_confirmation;
 
+    protected $listeners = [
+        'render',
+        'delete',
+        'createModal' => 'createShowModal',
+        'updateModal' => 'updateShowModal'
+    ];
+
     /**
      * rules
      *
@@ -58,6 +65,7 @@ class IndexUsers extends Component
         User::create($this->modelData());
         $this->modalFormVisible = false;
         $this->resetVars();
+        $this->emit('alert', 'The user was create successfully');
     }
 
     /**
@@ -82,6 +90,8 @@ class IndexUsers extends Component
         $this->validate();
         User::find($this->modelId)->update($this->modelData());
         $this->modalFormVisible = false;
+
+        $this->emit('alert', 'The user was updated successfully');
     }
 
     /**
@@ -89,11 +99,10 @@ class IndexUsers extends Component
      *
      * @return void
      */
-    function delete()
+    function delete(User $user)
     {
 
-        User::destroy($this->modelId);
-        //  $this->modalConfirmDeleteVisible = false;
+        $user->delete();
         $this->resetPage();
     }
 
@@ -104,7 +113,7 @@ class IndexUsers extends Component
      *
      * @return void
      */
-    public function CreateShowModal()
+    public function createShowModal()
     {
         $this->resetValidation();
         $this->resetVars();
@@ -171,6 +180,7 @@ class IndexUsers extends Component
         $this->name = null;
         $this->email = null;
         $this->password = null;
+        $this->password_confirmation = null;
     }
 
 

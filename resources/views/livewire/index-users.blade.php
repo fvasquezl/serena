@@ -5,12 +5,13 @@
                 {{ __('Admin/Users') }}
             </h2>
             <div class="mr-2">
-                <x-jet-button wire:click="CreateShowModal" class="bg-blue-500 hover:bg-blue-700">
+                <x-jet-button wire:click="$emitTo('index-users', 'createModal')" class="bg-blue-500 hover:bg-blue-700">
                     <i class="fas fa-plus"></i>&nbsp; {{ __('Create user') }}
                 </x-jet-button>
             </div>
         </div>
     </div>
+
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -50,11 +51,13 @@
                                             {{ $user->email }}
                                         </td>
                                         <td class="px-4 py-2 whitespace-nowrap text-right text-sm font-medium">
-                                            <x-jet-button wire:click="updateShowModal({{ $user->id }})"
+                                            {{-- <x-jet-button wire:click="updateShowModal({{ $user->id }})" --}}
+                                            <x-jet-button
+                                                wire:click="$emitTo('index-users', 'updateModal',{{ $user->id }} )"
                                                 class="bg-green-500 hover:bg-green-700">
                                                 <i class="fas fa-edit"></i>
                                             </x-jet-button>
-                                            <x-jet-button wire:click="deleteShowModal({{ $user->id }})"
+                                            <x-jet-button wire:click="$emit('deleteUser',{{ $user->id }})"
                                                 class="bg-red-500 hover:bg-red-700">
                                                 <i class="fas fa-trash"></i>
                                             </x-jet-button>
@@ -126,5 +129,34 @@
             @endif
         </x-slot>
     </x-jet-dialog-modal>
+
+
+    @push('js')
+        <script>
+            Livewire.on('deleteUser', userId => {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        console.log(userId);
+
+                        Livewire.emitTo('index-users', 'delete', userId)
+
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                    }
+                })
+            })
+        </script>
+    @endpush
 
 </div>
