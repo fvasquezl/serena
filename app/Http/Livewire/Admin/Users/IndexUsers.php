@@ -11,6 +11,8 @@ use Livewire\WithPagination;
 class IndexUsers extends Component
 {
     use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
     public $user;
     public $modalFormVisible = false;
     public $modelId;

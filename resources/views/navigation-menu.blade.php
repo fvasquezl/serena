@@ -1,5 +1,4 @@
-@php($nav_links = [['name' => 'Dashboard', 'route' => route('dashboard'), 'active' => request()->routeIs('dashboard')],
-    ['name' => 'Users', 'route' => route('admin.users'), 'active' => request()->routeIs('admin.users')]])
+@php($nav_links = [['name' => 'Dashboard', 'route' => route('dashboard'), 'active' => request()->routeIs('dashboard')]])
 
     <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
         <!-- Primary Navigation Menu -->
@@ -20,6 +19,7 @@
                                 {{ $nav_link['name'] }}
                             </x-jet-nav-link>
                         @endforeach
+
                     </div>
                 </div>
 
@@ -113,6 +113,13 @@
                                     {{ __('Manage Account') }}
                                 </div>
 
+
+                                @if (auth()->user()->hasRole('Admin'))
+                                    <x-jet-dropdown-link href="{{ route('admin.home') }}">
+                                        {{ __('Admin Area') }}
+                                    </x-jet-dropdown-link>
+                                @endif
+
                                 <x-jet-dropdown-link href="{{ route('profile.show') }}">
                                     {{ __('Profile') }}
                                 </x-jet-dropdown-link>
@@ -131,7 +138,7 @@
 
                                     <x-jet-dropdown-link href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
-                                                                                                                this.closest('form').submit();">
+                                                                                                                                                                                                                                                                        this.closest('form').submit();">
                                         {{ __('Log Out') }}
                                     </x-jet-dropdown-link>
                                 </form>
@@ -202,7 +209,7 @@
 
                         <x-jet-responsive-nav-link href="{{ route('logout') }}"
                             onclick="event.preventDefault();
-                                                                                                    this.closest('form').submit();">
+                                                                                                                                                                                                                                                            this.closest('form').submit();">
                             {{ __('Log Out') }}
                         </x-jet-responsive-nav-link>
                     </form>
