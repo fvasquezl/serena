@@ -1,0 +1,34 @@
+created:
+    - database/factories/HouseFactory.php
+    - database/factories/HuespedFactory.php
+    - database/factories/BinFactory.php
+    - database/factories/PresentationFactory.php
+    - database/factories/UnitFactory.php
+    - database/factories/CategoryFactory.php
+    - database/factories/ImageFactory.php
+    - database/factories/SkuFactory.php
+    - database/migrations/2021_06_25_230520_create_houses_table.php
+    - database/migrations/2021_06_25_230521_create_huespeds_table.php
+    - database/migrations/2021_06_25_230522_create_bins_table.php
+    - database/migrations/2021_06_25_230523_create_presentations_table.php
+    - database/migrations/2021_06_25_230524_create_units_table.php
+    - database/migrations/2021_06_25_230525_create_categories_table.php
+    - database/migrations/2021_06_25_230526_create_images_table.php
+    - database/migrations/2021_06_25_230527_create_skus_table.php
+    - app/House.php
+    - app/Huesped.php
+    - app/Bin.php
+    - app/Presentation.php
+    - app/Unit.php
+    - app/Category.php
+    - app/Image.php
+    - app/Sku.php
+models:
+    House: { name: string, slug: 'string unique', address: string, relationships: { hasMany: Huesped } }
+    Huesped: { name: string, slug: 'string unique', cam: string, house_id: id, relationships: { hasMany: Bin } }
+    Bin: { code: int, huesped_id: id, sku_id: id, dailyDose: 'float:5,2' }
+    Presentation: { name: string, slug: 'string unique', relationships: { hasMany: Sku } }
+    Unit: { name: string, slug: 'string unique', relationships: { hasMany: Sku } }
+    Category: { name: string, slug: 'string unique', relationships: { hasMany: Sku } }
+    Image: { url: string, imageable_id: string, imageable_type: string }
+    Sku: { name: string, slug: 'string unique', concentration: string, unitQty: integer, skuDate: date, unitInput: 'float:5,2', unitOutput: 'float:5,2', presentation_id: id, unit_id: id, user_id: id, category_id: id, relationships: { hasMany: Bin } }
